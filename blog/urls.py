@@ -22,5 +22,6 @@ urlpatterns = [
     path('', home),
     path('login.html', login),
     path('register.html', register),
-    path('logout.html', logout),
+    # path('logout.html', logout),
+    path('blog/', home),
 ]

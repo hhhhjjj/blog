@@ -2,9 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>register</title>
 </head>
 <body>
-
+    <h1>注册界面</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        用户名：<input type="text" name="name"><br>
+        密码：<input type="password" name="pwd"><br>
+        确认密码：<input type="password" name="re_pwd"><br>
+        邮箱：<input type="email" name="email"><br>
+        <input type="submit" value="注册">
+    </form>
 </body>
 </html>
