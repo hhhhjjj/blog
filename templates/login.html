@@ -8,11 +8,12 @@
 <h1>登陆界面</h1>
 {#最简单的html代码，哈哈#}
 {#这里要提醒下，提交到后台的get，post方式都可以，但是作为账户数据的话，用post#}
-<form action="" method="post">
+<form action="login.html" method="post">
     {% csrf_token %}
     用户名：<input type="text" name="name"><br>
     密码：<input type="password" name="pwd"><br>
     <input type="submit" value="登陆">
 </form>
+<li><a href="/register.html">注册</a></li>
 </body>
 </html>

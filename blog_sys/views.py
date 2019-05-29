@@ -1,11 +1,14 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from blog_sys.models import *
+from pure_pagination import PageNotAnInteger, Paginator
+# the package use to auto paging
 
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    blogs = Blog.objects.all().order_by("blog_publish_time")
+    return render(request, 'home.html', {'blogs': blogs})
 
 
 def index(request):
@@ -23,7 +26,7 @@ def login(request):
             user_obj = Author.objects.get(author_name=name)
             password = user_obj.author_password
             if check_password(pwd, password):
-                return render(request, 'login_success.html')
+                return render(request, 'index.html', {"user_name": name})
             return HttpResponse('name or password error')
         except Exception as e:
             return HttpResponse('no user,please check name')
@@ -45,10 +48,9 @@ def register(request):
                 else:
                     pwd = make_password(pwd)
                     Author.objects.create(author_name=name, author_password=pwd, author_email=email).save()
-                    return render(request, 'index.html')
+                    return render(request, 'index.html', {"user_name": name})
             else:
                 return HttpResponse('twice password is not same')
-
         else:
             return HttpResponse('can not have empty in name and password')
 
