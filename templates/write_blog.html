@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>写博客</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+	<div class="navbar-header">
+		<a>{{ user_name }}在写博客</a>
+	</div>
+	<div>
+		<ul class="nav navbar-nav">
+			<li><a href="">写博客</a></li>
+		</ul>
+	</div>
+	</div>
+</nav>
+     <form action="write_blog.html" method="POST">
+        {% csrf_token %}
+         <td>博客标题</td>
+        <input type="text" name="blog_name" />
+         <br />
+         <td>这里写内容</td>
+         <br />
+        <textarea name="blog_content" style="width:500px;height:300px;"></textarea>
+         <br />
+         <td>博客主题</td>
+        <select multiple name="theme_name">
+        {% for row in all_theme_list %}
+            <option value="{{ row.id }}">{{ row.theme_name}}</option>
+        {% endfor %}
+        </select>
+         <br />
+         <input type="submit" value="提交" />
+    </form>
+</body>
+</html>

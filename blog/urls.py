@@ -23,6 +23,6 @@ urlpatterns = [
     path('login.html', login),
     path('register.html', register),
     # path('logout.html', logout),
-    # path('blog/', home),
+    path('write_blog.html', write_blog),
     path('index.html', index),
 ]

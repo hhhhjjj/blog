@@ -28,6 +28,7 @@ def login(request):
             if check_password(pwd, password):
                 blogs = Blog.objects.filter(blog_author__author_name=name)
                 # don't use blog_author to filter, need use it
+                # filter will return a <QuerySet []> if not find value,and can not spring error
                 return render(request, 'index.html', {"user_name": name, "blogs": blogs})
             return HttpResponse('name or password error')
         except Exception as e:
@@ -36,7 +37,7 @@ def login(request):
 
 def register(request):
     if request.method == 'GET':
-        return render(request, 'register.html')
+        return render(request, 'register.html', )
     if request.method == 'POST':
         name = request.POST.get('name')
         pwd = request.POST.get('pwd')
@@ -55,6 +56,24 @@ def register(request):
                 return HttpResponse('twice password is not same')
         else:
             return HttpResponse('can not have empty in name and password')
+
+
+def write_blog(request):
+    if request.method == 'GET':
+        user_name = request.GET.get('nid', '')
+        all_theme_list = Theme.objects.all()
+        return render(request, 'write_blog.html', {'user_name': user_name, 'all_theme_list': all_theme_list})
+    if request.method == 'POST':
+        blog_author = request.POST.get('user_name')
+        blog_name = request.POST.get('blog_name')
+        blog_content = request.POST.get('blog_content')
+        blog_theme = request.POST.getlist('theme_name')
+        print(blog_theme)
+        blog_theme_obj = Theme.objects.get(theme_name=blog_theme)
+        blog_read_number = 0
+        Blog.objects.create(blog_author=blog_author, blog_name=blog_name, blog_content=blog_content,
+                            blog_read_number=blog_read_number, blog_theme=blog_theme_obj)
+        return render(request, 'index.html', {"user_name": blog_name})
 
 
 
