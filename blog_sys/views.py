@@ -7,7 +7,7 @@ from pure_pagination import PageNotAnInteger, Paginator
 
 # Create your views here.
 def home(request):
-    blogs = Blog.objects.all().order_by("blog_publish_time")
+    blogs = Blog.objects.all().order_by("-blog_publish_time")
     return render(request, 'home.html', {'blogs': blogs})
 
 
@@ -26,7 +26,9 @@ def login(request):
             user_obj = Author.objects.get(author_name=name)
             password = user_obj.author_password
             if check_password(pwd, password):
-                return render(request, 'index.html', {"user_name": name})
+                blogs = Blog.objects.filter(blog_author__author_name=name)
+                # don't use blog_author to filter, need use it
+                return render(request, 'index.html', {"user_name": name, "blogs": blogs})
             return HttpResponse('name or password error')
         except Exception as e:
             return HttpResponse('no user,please check name')
