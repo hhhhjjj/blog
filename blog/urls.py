@@ -22,7 +22,7 @@ urlpatterns = [
     path('', home),
     path('login.html', login),
     path('register.html', register),
-    # path('logout.html', logout),
     path('write_blog.html', write_blog),
     path('index.html', index),
+    path('detail/<str:id>/', get_detail, name='detail')
 ]

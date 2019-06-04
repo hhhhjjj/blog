@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ blog.blog_name }}</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1 class="col-12 mt-4 mb-4">{{ blog.blog_name }}</h1>
+        <div class="col-12 alert alert-success">作者：{{ blog.blog_author.author_name }}</div>
+        <div class="col-12 alert alert-success">主题：{{ blog.blog_theme.theme_name }}</div>
+        <div class="col-12">
+            <p>{{ blog.blog_content }}</p>
+        </div>
+        <div class="col-12 alert alert-success">发布时间：{{ blog.blog_publish_time }}</div>
+        <div class="col-12 alert alert-success">阅读数：{{ blog.blog_read_number }}</div>
+    </div>
+</div>
+</body>
+</html>
