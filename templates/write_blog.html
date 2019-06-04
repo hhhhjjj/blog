@@ -17,7 +17,7 @@
 	</div>
 	</div>
 </nav>
-     <form action="write_blog.html" method="POST">
+     <form action="write_blog.html?nid={{ user_name }}" method="POST">
         {% csrf_token %}
          <td>博客标题</td>
         <input type="text" name="blog_name" />

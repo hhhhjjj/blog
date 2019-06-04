@@ -61,19 +61,20 @@ def register(request):
 def write_blog(request):
     if request.method == 'GET':
         user_name = request.GET.get('nid', '')
+        print("user_name" + user_name)
         all_theme_list = Theme.objects.all()
         return render(request, 'write_blog.html', {'user_name': user_name, 'all_theme_list': all_theme_list})
     if request.method == 'POST':
-        blog_author = request.POST.get('user_name')
+        blog_author = request.GET.get('nid')
+        blog_author_obj = Author.objects.get(author_name=blog_author)
         blog_name = request.POST.get('blog_name')
         blog_content = request.POST.get('blog_content')
         blog_theme = request.POST.getlist('theme_name')
-        print(blog_theme)
-        blog_theme_obj = Theme.objects.get(theme_name=blog_theme)
+        blog_theme_obj = Theme.objects.get(theme_name=blog_theme[0])
         blog_read_number = 0
-        Blog.objects.create(blog_author=blog_author, blog_name=blog_name, blog_content=blog_content,
+        Blog.objects.create(blog_author=blog_author_obj, blog_name=blog_name, blog_content=blog_content,
                             blog_read_number=blog_read_number, blog_theme=blog_theme_obj)
-        return render(request, 'index.html', {"user_name": blog_name})
+        return render(request, 'index.html', {"user_name": blog_author})
 
 
 
