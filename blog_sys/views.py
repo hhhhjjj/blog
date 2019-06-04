@@ -1,14 +1,25 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from blog_sys.models import *
-from pure_pagination import PageNotAnInteger, Paginator
+from pure_pagination import PageNotAnInteger, Paginator, EmptyPage
 # the package use to auto paging
 
 
 # Create your views here.
 def home(request):
     blogs = Blog.objects.all().order_by("-blog_publish_time")
-    return render(request, 'home.html', {'blogs': blogs})
+    paginator = Paginator(blogs, 4, 3)
+    try:
+        # get value of index
+        num = request.GET.get('index', '1')
+        # get number of page
+        number = paginator.page(num)
+    except PageNotAnInteger:
+        # if input is not int, return 1 page
+        number = paginator.page(1)
+    except EmptyPage:
+        number = paginator.page(paginator.num_pages)
+    return render(request, 'home.html', {'blogs': blogs, 'page': number, 'paginator': paginator})
 
 
 def index(request):
@@ -77,9 +88,10 @@ def write_blog(request):
 
 
 def get_detail(request, id):
+    Blog.objects.get(id=id).blog_read_number = Blog.objects.get(id=id).blog_read_number + 1
     find_blog = Blog.objects.get(id=id)
-    blog = {'blog': find_blog}
-    return render(request, 'detail.html', blog)
+    comments = Comment.objects.filter(comment_blog__id=id)
+    return render(request, 'detail.html', {'blog': find_blog, 'comments': comments})
 
 
 
