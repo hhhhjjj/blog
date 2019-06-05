@@ -3,15 +3,20 @@ from django.contrib.auth.hashers import make_password, check_password
 from blog_sys.models import *
 from pure_pagination import PageNotAnInteger, Paginator, EmptyPage
 # the package use to auto paging
-
+# if error:Page' object is not iterable,need add
+# def __iter__(self):
+#     for i in self.object_list:
+#         yield i
+# in the page class
 
 # Create your views here.
 def home(request):
     blogs = Blog.objects.all().order_by("-blog_publish_time")
-    paginator = Paginator(blogs, 4, 3)
+    paginator = Paginator(blogs, 4, 2)
+    # 2 is if blog number in the next page is less than 2, it will merge in the now page.
+    # get value of index
+    num = request.GET.get('index', '1')
     try:
-        # get value of index
-        num = request.GET.get('index', '1')
         # get number of page
         number = paginator.page(num)
     except PageNotAnInteger:
@@ -19,11 +24,13 @@ def home(request):
         number = paginator.page(1)
     except EmptyPage:
         number = paginator.page(paginator.num_pages)
-    return render(request, 'home.html', {'blogs': blogs, 'page': number, 'paginator': paginator})
+    return render(request, 'home.html', {'blogs':  number, 'page': number, 'paginator': paginator})
 
 
 def index(request):
-    return render(request, 'index.html')
+    user_name = request.GET.get('user_name', '')
+    blogs = Blog.objects.filter(blog_author__author_name=user_name)
+    return render(request, 'index.html', {"user_name": user_name, "blogs": blogs})
 
 
 # test account and password:1, 11;2, 22;3, 33
@@ -84,7 +91,8 @@ def write_blog(request):
         blog_read_number = 0
         Blog.objects.create(blog_author=blog_author_obj, blog_name=blog_name, blog_content=blog_content,
                             blog_read_number=blog_read_number, blog_theme=blog_theme_obj)
-        return render(request, 'index.html', {"user_name": blog_author})
+        blogs = Blog.objects.filter(blog_author__author_name=blog_author)
+        return render(request, 'index.html', {"user_name": blog_author, "blogs":blogs})
 
 
 def get_detail(request, id):
