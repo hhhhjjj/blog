@@ -24,5 +24,5 @@ urlpatterns = [
     path('register.html', register),
     path('write_blog.html', write_blog),
     path('index.html', index),
-    path('detail/<str:id>/', get_detail, name='detail')
+    path('detail/<str:blog_id>/', get_detail, name='detail')
 ]

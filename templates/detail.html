@@ -26,21 +26,42 @@
                 </div>
             {% endfor %}
         </div>
-{#        <div class="comment-post" style="padding-top: 20px;">#}
-{#            <h3>提交评论</h3>#}
-{#            <form action="{% url 'blog_get_detail' blog.id %}" method="post">#}
-{#                {% csrf_token %}#}
-{#                {% for field in form %}#}
-{#                    <div class="input-field" style="padding-top: 10px">#}
-{#                        {{ field.label }}: {{ field }}#}
-{#                    </div>#}
-{#                    <div class="error" style="color: red;">#}
-{#                        {{ field.errors }}#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#                <button type="submit" style="margin-top: 10px">提交</button>#}
-{#            </form>#}
         </div>
 </div>
+<div>
+    <td>进行评论</td><br />
+            <textarea id="js-pl-textarea"></textarea>
+            <input type="submit" value="提交" id="js-pl-submit"/>
+</div>
+{#<script type="text/javascript">#}
+{#    $('#js-pl-submit').on('click',function () {#}
+{#    var comments = $('#js-pl-textarea').val()#}
+{#    if(comments === ""){#}
+{#        alert("评论不能为空")#}
+{#        return#}
+{#    }#}
+{#    $.ajax({#}
+{#        cache:false,#}
+{#        type:"POST",#}
+{#        url:"{% url 'comments:addcomment' %}",#}
+{#        data:{'post_id':{{ post.id }},'comments':comments},#}
+{#        async:true,#}
+{#        beforeSend:function (xhr,settings) {#}
+{#                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");#}
+{#                },#}
+{#        success:function (data) {#}
+{#            if (data.status == 'fail'){#}
+{#                if (data.msg == '用户未登录'){#}
+{#                    window.location.href = {% url 'login' %};#}
+{#                }else {#}
+{#                    alert(data.msg)#}
+{#                }#}
+{#            }else if(data.status == "success"){#}
+{#                window.location.reload()#}
+{#            }#}
+{#        }#}
+{#    })#}
+{#    })#}
+{#</script>#}
 </body>
 </html>

@@ -10,6 +10,8 @@ from pure_pagination import PageNotAnInteger, Paginator, EmptyPage
 # in the page class
 
 # Create your views here.
+
+
 def home(request):
     blogs = Blog.objects.all().order_by("-blog_publish_time")
     paginator = Paginator(blogs, 4, 2)
@@ -92,13 +94,13 @@ def write_blog(request):
         Blog.objects.create(blog_author=blog_author_obj, blog_name=blog_name, blog_content=blog_content,
                             blog_read_number=blog_read_number, blog_theme=blog_theme_obj)
         blogs = Blog.objects.filter(blog_author__author_name=blog_author)
-        return render(request, 'index.html', {"user_name": blog_author, "blogs":blogs})
+        return render(request, 'index.html', {"user_name": blog_author, "blogs": blogs})
 
 
-def get_detail(request, id):
-    Blog.objects.get(id=id).blog_read_number = Blog.objects.get(id=id).blog_read_number + 1
-    find_blog = Blog.objects.get(id=id)
-    comments = Comment.objects.filter(comment_blog__id=id)
+def get_detail(request, blog_id):
+    Blog.objects.get(id=blog_id).increase_read()
+    find_blog = Blog.objects.get(id=blog_id)
+    comments = Comment.objects.filter(comment_blog__id=blog_id)
     return render(request, 'detail.html', {'blog': find_blog, 'comments': comments})
 
 
