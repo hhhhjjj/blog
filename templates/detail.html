@@ -22,7 +22,7 @@
             <h3>评论</h3>
             {% for comment in comments %}
                 <div class="comment-field" style="padding-top: 10px;">
-                    {{ comment.comment_user }} 说: {{ comment.content }}
+                    {{ comment.comment_user.author_name }} 说: {{ comment.content }}
                 </div>
             {% endfor %}
         </div>

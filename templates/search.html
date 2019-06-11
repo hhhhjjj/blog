@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果</title>
+</head>
+<body>
+{% for blog in blog_list %}
+    <a class="blog_link" href="{% url 'detail' blog_id=blog.id %}"><h2>{{ blog.blog_name }}</h2></a>
+{% endfor %}
+</body>
+</html>

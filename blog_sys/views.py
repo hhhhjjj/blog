@@ -104,5 +104,11 @@ def get_detail(request, blog_id):
     return render(request, 'detail.html', {'blog': find_blog, 'comments': comments})
 
 
+def search(request):
+    search_blog = request.GET.get('search_all')
+    blog_list = Blog.objects.filter(blog_name__contains=search_blog)
+    return render(request, 'search.html', {'blog_list': blog_list})
+
+
 
 

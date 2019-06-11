@@ -19,19 +19,14 @@
             <li><a href="#">关于</a></li>
 		</ul>
 	</div>
-	<form class="bs-example bs-example-form" role="form">
+	<form class="bs-example bs-example-form" role="form" action="search.html" method="get">
+        {% csrf_token %}
 			<div class="col-lg-6">
 				<div class="input-group">
-					<input type="text" class="form-control" id="research_all">
+					<input type="search" class="form-control" name="search_all" />
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">
+						<button class="btn btn-default" type="submit">
 							搜索全站博客
-						</button>
-					</span>
-                    <input type="text" class="form-control" id="research_self">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">
-							搜索本人博客
 						</button>
 					</span>
 				</div><!-- /input-group -->
