@@ -37,7 +37,7 @@
 {% for blog in blogs %}
 <div align="center" class="blog">
     <div class="title">
-        <a class="blog_link" href="{% url 'detail' blog_id=blog.id %}"><h2>{{ blog.blog_name }}</h2></a>
+        <a class="blog_link" href="{% url 'detail' blog_id=blog.id %}?user_name={{ user_name }}"><h2>{{ blog.blog_name }}</h2></a>
     </div>
     <div class="info">
         <span class="category" style="color: #ff9900;">类型：{{ blog.blog_theme.theme_name }}</span>

@@ -20,10 +20,11 @@ from blog_sys.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
-    path('login.html', login),
+    path('login.html', login, name='login.html'),
     path('register.html', register),
     path('write_blog.html', write_blog),
     path('index.html', index),
     path('detail/<str:blog_id>/', get_detail, name='detail'),
+    path('add_comment', add_comment, name='add_comment'),
     path('search.html', search)
 ]

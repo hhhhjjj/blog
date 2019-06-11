@@ -98,10 +98,11 @@ def write_blog(request):
 
 
 def get_detail(request, blog_id):
+    user_name = request.GET.get('user_name', '')
     Blog.objects.get(id=blog_id).increase_read()
     find_blog = Blog.objects.get(id=blog_id)
     comments = Comment.objects.filter(comment_blog__id=blog_id)
-    return render(request, 'detail.html', {'blog': find_blog, 'comments': comments})
+    return render(request, 'detail.html', {'blog': find_blog, 'comments': comments, 'user_name': user_name})
 
 
 def search(request):
@@ -110,5 +111,24 @@ def search(request):
     return render(request, 'search.html', {'blog_list': blog_list})
 
 
+def add_comment(request):
+    print(request)
+    if not request.user.is_authenticated():
+        # judge login state
+        return HttpResponse('{"status":"fail", "msg":"user need login"}', content_type='application/json')
 
+    blog_id = request.POST.get('blog_id', 0)
+    comments = request.POST.get('comments', '')
+    user_name = request.POST.get('user_name', '')
+    if int(blog_id) > 0 and comments:
+        blog_comments = Comment()
+        blog = Blog.objects.get(id=int(blog_id))
+        blog_comments.comment_blog = blog
+        blog_comments.content = comments
+        blog_comments.comment_user = user_name
+        blog_comments.save()
+        blog.save()
+        return HttpResponse('{"status":"success", "msg":"comment success"}', content_type='application/json')
+    else:
+        return HttpResponse('{"status":"fail", "msg":"comment fail"}', content_type='application/json')
 
