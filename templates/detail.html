@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{#    要记得加上不然ajax这些出不来，js的问题就浏览器F12看看是不是报错了#}
 </head>
 <body>
 <div class="container">
@@ -34,15 +35,14 @@
 <br />
 <form class="comment-form" id="jsStayForm">
         <input name="comment_user" type="hidden" id="js-name" value="{{ user_name.id }}">
+{#    需要用id来保存，不然会报错#}
       <div class="form-group">
         <label class="comment">评论:</label>
         <textarea name="content" class="form-control" id="js-content" rows="5" placeholder="不超过300个字"></textarea>
-
       </div>
         <input name="comment_blog" type="hidden" id="js-name" value="{{ blog.id }}">
         <p class="error company-tips" id="jsCompanyTips"></p>
-
-        <button class="btn" type="submit" id="jsStayBtn" value="发表">发表</button>
+        <button class="btn" type="submit" id="jsStayBtn" value="发表评论">发表评论</button>
 {#    这个不能用button，不然会提交不上，要用submit#}
     </form>
 {% block content_js %}
@@ -53,7 +53,8 @@
             $.ajax({
                 cache: false,
                 type: "POST",
-                url:"add_comment",
+                url:"add_comment?user_name={{ user_name.author_name }}",
+                {#需要加上名字传过去，不然会报找不到，虽然不影响功能#}
                 data:$('#jsStayForm').serialize(),
                 dateType:"json",
                 async: true,
@@ -68,7 +69,7 @@
                     }
                 },
             });
-            {#return false#}
+            return false
         {#    阻止表单提交#}
         });
     })

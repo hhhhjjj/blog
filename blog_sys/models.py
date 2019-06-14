@@ -52,6 +52,8 @@ class Comment(models.Model):
     comment_blog = models.ForeignKey("Blog", on_delete=models.CASCADE)
     comment_user = models.ForeignKey("Author", on_delete=models.CASCADE)
     reply = models.ForeignKey("self", on_delete=models.DO_NOTHING, null=True, blank=True)
+    # reply is not complete,I think next should make a single class to finish reply
+    # could have reply user,reply time and so on.and have a list reply
 
     class Meta:
         db_table = 'comment'

@@ -103,7 +103,7 @@ def get_detail(request, blog_id):
     if request.method == 'GET':
         user_name = request.GET.get('user_name', '')
         user_name = Author.objects.get(author_name=user_name)
-        print(user_name)
+        # post and get have two ways to deal
         Blog.objects.get(id=blog_id).increase_read()
         find_blog = Blog.objects.get(id=blog_id)
         comments = Comment.objects.filter(comment_blog__id=blog_id)
