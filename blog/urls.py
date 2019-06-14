@@ -26,6 +26,6 @@ urlpatterns = [
     path('index.html', index),
     path('detail/<str:blog_id>/', get_detail, name='detail'),
     path('theme/<str:theme_name>/', theme, name='theme'),
-    path('add_comment', AddCommentView.as_view(), name='add_comment'),
+    path('detail/<str:blog_id>/add_comment', AddCommentView.as_view(), name='add_comment'),
     path('search.html', search)
 ]

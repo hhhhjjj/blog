@@ -100,11 +100,20 @@ def write_blog(request):
 
 
 def get_detail(request, blog_id):
-    user_name = request.GET.get('user_name', '')
-    Blog.objects.get(id=blog_id).increase_read()
-    find_blog = Blog.objects.get(id=blog_id)
-    comments = Comment.objects.filter(comment_blog__id=blog_id)
-    return render(request, 'detail.html', {'blog': find_blog, 'comments': comments, 'user_name': user_name})
+    if request.method == 'GET':
+        user_name = request.GET.get('user_name', '')
+        user_name = Author.objects.get(author_name=user_name)
+        print(user_name)
+        Blog.objects.get(id=blog_id).increase_read()
+        find_blog = Blog.objects.get(id=blog_id)
+        comments = Comment.objects.filter(comment_blog__id=blog_id)
+        return render(request, 'detail.html', {'blog': find_blog, 'comments': comments, 'user_name': user_name})
+    if request.method == 'POST':
+        user_name = request.GET.get('user_name', '')
+        Blog.objects.get(id=blog_id).increase_read()
+        find_blog = Blog.objects.get(id=blog_id)
+        comments = Comment.objects.filter(comment_blog__id=blog_id)
+        return render(request, 'detail.html', {'blog': find_blog, 'comments': comments, 'user_name': user_name})
 
 
 def search(request):
@@ -114,9 +123,7 @@ def search(request):
 
 
 class AddCommentView(View):
-    def post(self, request):
-        print("GET" + request.GET)
-        print("POST" + request.POST)
+    def post(self, request, blog_id):
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment_form.save()

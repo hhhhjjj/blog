@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ blog.blog_name }}</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -30,13 +33,13 @@
 </div>
 <br />
 <form class="comment-form" id="jsStayForm">
-        <input name="comment_user" type="hidden" id="js-name" value="{{ user_name }}">
+        <input name="comment_user" type="hidden" id="js-name" value="{{ user_name.id }}">
       <div class="form-group">
         <label class="comment">评论:</label>
         <textarea name="content" class="form-control" id="js-content" rows="5" placeholder="不超过300个字"></textarea>
 
       </div>
-        <input name="comment_blog" type="hidden" id="js-name" value="{{ blog.blog_name }}">
+        <input name="comment_blog" type="hidden" id="js-name" value="{{ blog.id }}">
         <p class="error company-tips" id="jsCompanyTips"></p>
 
         <button class="btn" type="submit" id="jsStayBtn" value="发表">发表</button>
@@ -59,14 +62,13 @@
             },
                 success: function(data) {
                     if(data.status === 'success'){
-                        alert("提交成功");
                          window.location.reload();//刷新当前页面.
                     }else if(data.status === 'fail'){
                         alert("评论错误，请重新评论");
                     }
                 },
             });
-            return false
+            {#return false#}
         {#    阻止表单提交#}
         });
     })
