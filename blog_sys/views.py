@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from blog_sys.models import *
 from pure_pagination import PageNotAnInteger, Paginator, EmptyPage
+from blog_sys.forms import CommentForm
+from django.views.generic import View
 # the package use to auto paging
 # if error:Page' object is not iterable,need add
 # def __iter__(self):
@@ -111,24 +113,23 @@ def search(request):
     return render(request, 'search.html', {'blog_list': blog_list})
 
 
-def add_comment(request):
-    print(request)
-    if not request.user.is_authenticated():
-        # judge login state
-        return HttpResponse('{"status":"fail", "msg":"user need login"}', content_type='application/json')
+class AddCommentView(View):
+    def post(self, request):
+        print("GET" + request.GET)
+        print("POST" + request.POST)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment_form.save()
+            return HttpResponse('{"status": "success"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status": "fail"}', content_type='application/json')
 
-    blog_id = request.POST.get('blog_id', 0)
-    comments = request.POST.get('comments', '')
-    user_name = request.POST.get('user_name', '')
-    if int(blog_id) > 0 and comments:
-        blog_comments = Comment()
-        blog = Blog.objects.get(id=int(blog_id))
-        blog_comments.comment_blog = blog
-        blog_comments.content = comments
-        blog_comments.comment_user = user_name
-        blog_comments.save()
-        blog.save()
-        return HttpResponse('{"status":"success", "msg":"comment success"}', content_type='application/json')
-    else:
-        return HttpResponse('{"status":"fail", "msg":"comment fail"}', content_type='application/json')
+
+def theme(request, theme_name):
+    user_name = request.GET.get('user_name', '')
+    blog_list = Blog.objects.filter(blog_theme__theme_name=theme_name).all()
+    return render(request, 'search.html', {'blog_list': blog_list, 'user_name': user_name})
+
+
+
 

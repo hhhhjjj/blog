@@ -16,7 +16,21 @@
 	<div>
 		<ul class="nav navbar-nav">
 			<li class="active"><a href="write_blog.html?nid={{ user_name }}">写博客</a></li>
-            <li><a href="#">关于</a></li>
+            <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					按主题分类浏览
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="{% url 'theme' theme_name=1 %}?user_name={{ user_name }}">1</a></li>
+					<li><a href="{% url 'theme' theme_name=2 %}?user_name={{ user_name }}">2</a></li>
+					<li><a href="{% url 'theme' theme_name=3 %}?user_name={{ user_name }}">3</a></li>
+					<li class="divider"></li>
+					<li><a href="{% url 'theme' theme_name=4 %}?user_name={{ user_name }}">4</a></li>
+					<li class="divider"></li>
+					<li><a href="{% url 'theme' theme_name=5 %}?user_name={{ user_name }}">5</a></li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 	<form class="bs-example bs-example-form" role="form" action="search.html" method="get">
