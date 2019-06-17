@@ -29,10 +29,6 @@ class Blog(models.Model):
     def __unicode__(self):
         return self.blog_name
 
-    def increase_read(self):
-        self.blog_read_number += 1
-        self.save(update_fields=['blog_read_number'])
-
 
 class Author(models.Model):
     author_name = models.CharField(max_length=100)

@@ -104,7 +104,16 @@ def get_detail(request, blog_id):
         user_name = request.GET.get('user_name', '')
         user_name = Author.objects.get(author_name=user_name)
         # post and get have two ways to deal
-        Blog.objects.get(id=blog_id).increase_read()
+        # Blog.objects.get(id=blog_id).increase_read()
+        # read number in high concurrency have problem
+        # use optimistic lock to fix this bug
+        while True:
+            origin_read_number = Blog.objects.filter(id=blog_id).first().blog_read_number
+            result = Blog.objects.filter(id=blog_id, blog_read_number=origin_read_number)\
+                .update(blog_read_number=origin_read_number + 1)
+            if result == 0:
+                continue
+            break
         find_blog = Blog.objects.get(id=blog_id)
         comments = Comment.objects.filter(comment_blog__id=blog_id)
         return render(request, 'detail.html', {'blog': find_blog, 'comments': comments, 'user_name': user_name})
