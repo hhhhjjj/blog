@@ -4,6 +4,7 @@ from blog_sys.models import *
 from pure_pagination import PageNotAnInteger, Paginator, EmptyPage
 from blog_sys.forms import CommentForm
 from django.views.generic import View
+from django.db.models import F, Q
 # the package use to auto paging
 # if error:Page' object is not iterable,need add
 # def __iter__(self):
@@ -12,6 +13,7 @@ from django.views.generic import View
 # in the page class
 
 # Create your views here.
+# C:\Users\hh\Downloads\blog-master\blog-master\Scripts\python.exe manage.py runserver
 
 
 def home(request):
@@ -109,11 +111,24 @@ def get_detail(request, blog_id):
         # use optimistic lock to fix this bug
         while True:
             origin_read_number = Blog.objects.filter(id=blog_id).first().blog_read_number
-            result = Blog.objects.filter(id=blog_id, blog_read_number=origin_read_number)\
+            result = Blog.objects.filter(id=blog_id, blog_read_number=origin_read_number) \
                 .update(blog_read_number=origin_read_number + 1)
             if result == 0:
                 continue
             break
+        # other way: use F in django.db.models
+        # F is An operation that takes the value of a column in an object
+        # blog = Blog.objects.get(id=blog_id)
+        # blog.read_number = F('read_number') + 1
+        # blog.save()
+        # blog.refresh_from_db()
+        # need update value
+        # regardless of blog.read_number is what,python never use it
+        # create only one SQL code and run
+
+        # Q in django.db.models is complex query to an object,  and or not
+
+
         find_blog = Blog.objects.get(id=blog_id)
         comments = Comment.objects.filter(comment_blog__id=blog_id)
         return render(request, 'detail.html', {'blog': find_blog, 'comments': comments, 'user_name': user_name})
