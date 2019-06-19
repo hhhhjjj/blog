@@ -125,6 +125,16 @@ def get_detail(request, blog_id):
         # need update value
         # regardless of blog.read_number is what,python never use it
         # create only one SQL code and run
+        
+        # pessimistic lock:
+#         try:
+        #   blog = Blog.objects.select_for_update().get(id=blog_id)
+#       #   add mutex(mutual exclusion lock)
+#         except Blog.blog.DoesNotExist:
+#           return JsonResponse({'errmsg':'blog id is wrong'})
+#         read_number = Blog.objects.filter(id=blog_id).first().blog_read_number
+#         read_number += read_number
+#         blog.save()
 
         # Q in django.db.models is complex query to an object,  and or not
 
