@@ -31,6 +31,7 @@ def home(request):
     except EmptyPage:
         number = paginator.page(paginator.num_pages)
     return render(request, 'home.html', {'blogs':  number, 'page': number, 'paginator': paginator})
+    # could use response = render(...).set_cookie(...) to set cookie and then return response
 
 
 def index(request):
