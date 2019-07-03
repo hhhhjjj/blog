@@ -17,6 +17,7 @@ from django.db.models import F, Q
 
 
 def home(request):
+    # could use request.META.get('HTTP_USER_AGENT') to get agent
     blogs = Blog.objects.all().order_by("-blog_publish_time")
     paginator = Paginator(blogs, 4, 2)
     # 2 is if blog number in the next page is less than 2, it will merge in the now page.
