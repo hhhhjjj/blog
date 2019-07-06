@@ -102,6 +102,7 @@ def write_blog(request):
                             blog_read_number=blog_read_number, blog_theme=blog_theme_obj)
         blogs = Blog.objects.filter(blog_author__author_name=blog_author)
         return render(request, 'index.html', {"user_name": blog_author, "blogs": blogs})
+#     check whether login:use request.session['is_login'] = True
 
 
 def get_detail(request, blog_id):
