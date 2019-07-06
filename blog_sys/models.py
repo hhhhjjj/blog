@@ -34,6 +34,7 @@ class Author(models.Model):
     author_name = models.CharField(max_length=100)
     author_password = models.CharField(max_length=100)
     author_email = models.EmailField()
+#     I could add session in Author to save session state
 
     class Meta:
         db_table = 'author'
