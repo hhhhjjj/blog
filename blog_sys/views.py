@@ -40,6 +40,7 @@ def index(request):
     user_name = request.GET.get('user_name', '')
     blogs = Blog.objects.filter(blog_author__author_name=user_name)
     return render(request, 'index.html', {"user_name": user_name, "blogs": blogs})
+# I could use request.session.get('is_login') != True to judge login
 
 
 # test account and password:1, 11;2, 22;3, 33
